@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grandpa's Smart Exchange Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Poppins:wght=600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0d2b45;
+            --deep-blue: #1a365d;
+            --electric-blue: #0056b3;
+            --bg-ice: #f0f7ff;
+            --white: #ffffff;
+            --shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            background-color: var(--bg-ice);
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            color: var(--navy);
+        }
+
+        .mobile-container {
+            width: 100%;
+            max-width: 420px;
+            background: var(--white);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 40px;
+        }
+
+        .love-banner {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            padding: 14px 15px;
+            text-align: center;
+            border-bottom: 1px solid #7dd3fc;
+        }
+        .love-banner p {
+            margin: 0;
+            font-size: 15px;
+            color: #0369a1;
+            line-height: 1.5;
+            font-weight: 500;
+            letter-spacing: -0.3px;
+        }
+
+        header {
+            padding: 20px 20px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--deep-blue);
+        }
+        .time-box { text-align: right; }
+        .date-text { font-size: 12px; color: #64748b; margin-bottom: 2px; }
+        .clock-text { font-family: 'Poppins', sans-serif; font-size: 19px; color: var(--electric-blue); font-weight: 600; }
+
+        .medical-info {
+            margin: 0 20px 15px;
+            padding: 12px 15px;
+            background: #f1f5f9;
+            border-radius: 15px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #475569;
+            border-left: 5px solid var(--electric-blue);
+        }
+
+        .main-action { padding: 0 20px 20px; }
+        .btn-main {
+            width: 100%;
+            background: var(--deep-blue);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 15px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(26,54,93,0.3);
+        }
+        .btn-main:active { transform: scale(0.98); }
+
+        .diet-stack { padding: 0 20px; display: flex; flex-direction: column; gap: 15px; }
+        .diet-card {
+            background: var(--white);
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 18px;
+        }
+        .diet-card h2 {
+            margin: 0 0 12px 0;
+            font-size: 15px;
+            color: var(--electric-blue);
+        }
+        .meal-box {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+        .meal-name { font-size: 16px; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+        .meal-detail { font-size: 13px; color: #64748b; line-height: 1.4; }
+        
+        .snack-box {
+            background: #fffbeb;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            border: 1px solid #fef3c7;
+        }
+        .snack-box strong { color: #b45309; margin-right: 5px; }
+
+        .memo-area {
+            margin: 20px 20px 0;
+            padding: 18px;
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+        }
+        .memo-area h3 { margin: 0 0 12px 0; font-size: 15px; color: #334155; }
+        .memo-inputs { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+        .memo-inputs input { padding: 11px; border-radius: 10px; border: 1px solid #cbd5e0; font-size: 13px; width: 100%; }
+        .btn-memo { background: #64748b; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 14px; }
+        
+        .memo-list { display: flex; flex-direction: column; gap: 10px; }
+        .memo-item {
+            background: white;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+        .memo-item h4 { margin: 0 0 4px 0; font-size: 14px; color: var(--navy); }
+        .memo-item p { margin: 0; font-size: 12px; color: #64748b; line-height: 1.4; }
+        .del-memo { position: absolute; top: 11px; right: 12px; color: #ef4444; border: none; background: none; font-size: 12px; font-weight: 700; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="mobile-container">
+    <div class="love-banner">
+        <p>
+            사랑하는 할머니, 할아버지!!<br>
+            사랑합니다 건강하세요~~ 영양팀장 송연 올림
+        </p>
+    </div>
+
+    <header>
+        <div><h1>Dashboard</h1></div>
+        <div class="time-box">
+            <div id="date-display" class="date-text"></div>
+            <div id="clock-display" class="clock-text"></div>
+        </div>
+    </header>
+
+    <div class="medical-info">
+        <strong>📊 대한당뇨병학회 기준 수천가지 자동조합</strong><br>
+        버튼을 누를 때마다 겹치지 않는 새로운 식단 메뉴 명칭과 영양 구성이 추천됩니다. 할아버지의 혈당 안정과 소화를 최우선으로 연산합니다.
+    </div>
+
+    <div class="main-action">
+        <button class="btn-main" onclick="generateExchangeMenu()">🎲 식품교환표 영양 식단 추천</button>
+    </div>
+
+    <div class="diet-stack">
+        <div class="diet-card">
+            <h2>🌅 아침 속 편한 한식</h2>
+            <div class="meal-box">
+                <div class="meal-name" id="b-title">버튼을 눌러주세요</div>
+                <div class="meal-detail" id="b-detail">-</div>
+            </div>
+            <div class="snack-box">
+                <strong>🥛 오전 간식</strong><span id="b-snack">-</span>
+            </div>
+        </div>
+        <div class="diet-card">
+            <h2>☀️ 점심 일품 조합</h2>
+            <div class="meal-box">
+                <div class="meal-name" id="l-title">버튼을 눌러주세요</div>
+                <div class="meal-detail" id="l-detail">-</div>
+            </div>
+            <div class="snack-box">
+                <strong>🍅 오후 간식</strong><span id="l-snack">-</span>
+            </div>
+        </div>
+        <div class="diet-card">
+            <h2>🌙 저녁 일품 조합</h2>
+            <div class="meal-box">
+                <div class="meal-name" id="d-title">버튼을 눌러주세요</div>
+                <div class="meal-detail" id="d-detail">-</div>
+            </div>
+            <p style="font-size: 11px; color: #94a3b8; margin:0;">* 야간 혈당 안정을 위해 저녁 이후 간식은 금합니다.</p>
+        </div>
+    </div>
+
+    <div class="memo-area">
+        <h3>📝 할머니의 식당 메모장</h3>
+        <div class="memo-inputs">
+            <input type="text" id="memo-name" placeholder="식당 이름 (예: 명품 버섯 샤브)">
+            <input type="text" id="memo-loc" placeholder="위치 (예: 신대방동)">
+            <input type="text" id="memo-food" placeholder="주요 메뉴 및 할아버지 상태 메모">
+            <button class="btn-memo" onclick="addMemo()">식당 기록하기 📌</button>
+        </div>
+        <div class="memo-list" id="memo-container"></div>
+    </div>
+</div>
+
+<script>
+    // 식단 구성 풀 (메뉴 명칭 자체가 바뀌도록 구조화)
+    const breakfastMenus = [
+        { title: "🍲 부드러운 계란찜과 잡곡밥 정식", details: "귀리 잡곡밥(140g), 부드러운 계란찜(2알), 들기름 애호박 채볶음" },
+        { title: "🐟 자박한 가자미찜 소화 안심상", details: "보리 잡곡밥(140g), 무염 가자미 찜(1토막), 구운 보라색 가지나물" },
+        { title: "🫕 연두부 양념조림과 촉촉 한식상", details: "발아현미밥(140g), 생 연두부 양념장 조림(1모), 살짝 데친 청경채무침" },
+        { title: "🐓 저염 닭안심 장조림과 든든 아침상", details: "귀리 잡곡밥(140g), 촉촉한 닭안심 장조림(80g), 들기름 볶음 아욱나물" },
+        { title: "🫓 하얀 두부부침 고소한 한식 정찬", details: "보리 잡곡밥(140g), 하얀 두부 부침(100g), 표고와 팽이버섯 볶음" }
+    ];
+
+    const lunchMenus = [
+        { title: "🥩 우둔살 살코기 찹스테이크 덮밥", details: "소고기 우둔살(80g)과 양배추/브로콜리를 올리브유에 볶아 얹은 발아현미밥" },
+        { title: "🍝 지중해식 오일 통밀 파스타", details: "통밀 파스타면(70g), 신선한 달걀(2알), 아삭한 오이와 슬라이스 채소 토핑" },
+        { title: "🦆 훈제오리 구이와 제철 쌈밥", details: "기름을 뺀 훈제오리(70g), 귀리 잡곡밥(140g), 부추와 다진 양파 무침" },
+        { title: "🍜 담백한 닭안심살 통밀 국수", details: "통밀 국수 소면(70g), 부드러운 닭안심살(90g), 고소한 들기름과 버섯 고명" },
+        { title: "🐚 전복 가득 셰프 추천 오븐 덮밥", details: "싱싱한 바다 전복(2미)과 여름 애호박을 아보카도 오일로 구워낸 보리 잡곡밥" }
+    ];
+
+    const dinnerMenus = [
+        { title: "🐟 무염 고등어 속살 구이 정식", details: "무염 고등어 속살(1/2마리), 발아현미밥(140g), 살짝 데친 브로콜리와 양배추쌈" },
+        { title: "🥩 안심 돼지고기 버섯 볶음밥", details: "돼지고기 안심(80g), 보리 잡곡밥(140g), 표고/팽이버섯을 들기름에 볶아낸 별미" },
+        { title: "🍝 담백한 흰살생선 통밀 파스타", details: "통밀 파스타면(70g), 가자미 살(80g), 청경채를 올리브유로 가볍게 조리한 요리" },
+        { title: "🐓 촉촉 닭안심 오븐구이와 덮밥", details: "닭안심살(90g)을 아보카도 오일로 구워 구운 가지와 함께 올린 귀리 잡곡밥" },
+        { title: "🍳 두부 달걀 스크램블 일품식", details: "신선한 달걀(2알)과 두부(100g)를 아삭한 오이/양파와 함께 볶아낸 든든한 저녁상" }
+    ];
+
+    const fruits = ["방울토마토 10알", "생 블루베리 20알", "참외 1/4쪽", "아삭한 사과 1/3쪽"];
+    const milks = ["무가당 두유 1팩", "저지방 우유 1컵", "플레인 요거트 1개"];
+
+    function getRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    function generateExchangeMenu() {
+        const b = getRandom(breakfastMenus);
+        let l = getRandom(lunchMenus);
+        let d = getRandom(dinnerMenus);
+
+        document.getElementById('b-title').innerText = b.title;
+        document.getElementById('b-detail').innerText = b.details;
+        
+        document.getElementById('l-title').innerText = l.title;
+        document.getElementById('l-detail').innerText = l.details;
+        
+        document.getElementById('d-title').innerText = d.title;
+        document.getElementById('d-detail').innerText = d.details;
+
+        document.getElementById('b-snack').innerText = ` ${getRandom(fruits)} + 🥜 볶은 아몬드 5알`;
+        document.getElementById('l-snack').innerText = ` ${getRandom(milks)} + 🥜 호두 2알`;
+    }
+
+    function updateClock() {
+        const now = new Date();
+        document.getElementById('date-display').innerText = now.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
+        document.getElementById('clock-display').innerText = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // 로컬 스토리지 키 이름 변경하여 새로운 기본값 강제 적용
+    let memos = JSON.parse(localStorage.getItem('exchMemosV8_Final'));
+    if (!memos || memos.length === 0) {
+        memos = [{
+            name: "유성옥",
+            loc: "스마트시티 근처",
+            food: "한우수육, 기력 회복에 좋음"
+        }];
+        localStorage.setItem('exchMemosV8_Final', JSON.stringify(memos));
+    }
+
+    function renderMemos() {
+        const container = document.getElementById('memo-container');
+        container.innerHTML = memos.map((m, i) => `
+            <div class="memo-item">
+                <h4>📍 ${m.name} (${m.loc})</h4>
+                <p>📝 ${m.food}</p>
+                <button class="del-memo" onclick="deleteMemo(${i})">삭제</button>
+            </div>
+        `).join('');
+    }
+    function addMemo() {
+        const name = document.getElementById('memo-name').value.trim();
+        const loc = document.getElementById('memo-loc').value.trim() || "위치 미기입";
+        const food = document.getElementById('memo-food').value.trim() || "내용 없음";
+        if(!name) return alert("식당 이름을 입력해 주세요! 😊");
+        memos.push({name, loc, food});
+        localStorage.setItem('exchMemosV8_Final', JSON.stringify(memos));
+        renderMemos();
+        document.getElementById('memo-name').value = ''; document.getElementById('memo-loc').value = ''; document.getElementById('memo-food').value = '';
+    }
+    function deleteMemo(i) {
+        memos.splice(i, 1);
+        localStorage.setItem('exchMemosV8_Final', JSON.stringify(memos));
+        renderMemos();
+    }
+    window.onload = function() { renderMemos(); };
+</script>
+
+</body>
+</html>
